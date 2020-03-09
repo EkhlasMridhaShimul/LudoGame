@@ -1,0 +1,1 @@
+It is a simple multiplayer ludo game developed with javascript and html.
