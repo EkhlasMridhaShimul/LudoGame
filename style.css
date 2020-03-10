@@ -1,5 +1,17 @@
-#ludo-board{
+.ludo-board{
     background: url(images/ludo_board.jpg);
     width: 474px;
     height: 474px;
+    margin: 20px;
+}
+
+.game-body{
+    display: flex;
+}
+
+#dice{
+    background: url(images/dice.png);
+    width: 100px;
+    height: 100px;
+    margin: 20px;
 }
