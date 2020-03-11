@@ -5,10 +5,40 @@
     <link rel="stylesheet" href="style.css" />
     <script src="LudoEngine.js"></script>
   </head>
-  <body>
-    <div class="game-body">
-      <div class="ludo-board"></div>
-      <div id="dice" onclick="shuffleDice()"></div>
+  <body onload="resetButtons()">
+    <div class="game-field">
+      <h1 style="color: brown;">Ludo</h1>
+      <div class="ludo-board" ></div>
+
+      <div class="dice-field">
+        <div class="player-info">
+          <div name="player" class="player-style">
+            <h1 id="player" style="color: red; margin-right: 10px;">Red's</h1><h1>turn<h1>
+          </div>
+          <label for="player">Click on the dice to shuffle</label>
+        </div>
+        <div id="dice" name="dice-icon" onclick="shuffleDice()"></div>
+      </div>
+
+      <div class="redButton" id="red1"></div>
+      <div class="redButton" id="red2"></div>
+      <div class="redButton" id="red3"></div>
+      <div class="redButton" id="red4"></div>
+
+      <div class="greenButton" id="green1"></div>
+      <div class="greenButton" id="green2"></div>
+      <div class="greenButton" id="green3"></div>
+      <div class="greenButton" id="green4"></div>
+
+      <div class="blueButton" id="blue1"></div>
+      <div class="blueButton" id="blue2"></div>
+      <div class="blueButton" id="blue3"></div>
+      <div class="blueButton" id="blue4"></div>
+
+      <div class="yellowButton" id="yellow1"></div>
+      <div class="yellowButton" id="yellow2"></div>
+      <div class="yellowButton" id="yellow3"></div>
+      <div class="yellowButton" id="yellow4"></div>
     </div>
   </body>
 </html>

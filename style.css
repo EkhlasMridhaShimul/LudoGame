@@ -3,10 +3,7 @@
     width: 474px;
     height: 474px;
     margin: 20px;
-}
-
-.game-body{
-    display: flex;
+    position: relative;
 }
 
 #dice{
@@ -14,4 +11,54 @@
     width: 100px;
     height: 100px;
     margin: 20px;
+}
+
+.dice-field{
+    display: flex;
+    flex-direction: row;
+    margin: 20px;
+}
+
+.player-info{
+    display: flex;
+    flex-direction: column;
+    padding-right: 150px;
+}
+
+.game-field{
+    display: flex;
+    flex-direction: column;
+}
+
+.player-style{
+    display: flex;
+    flex-direction: row;
+}
+
+.redButton{
+    background: url(images/red.jpg);
+    height: 20px;
+    width: 20px;
+    position: absolute;
+}
+
+.greenButton{
+    background: url(images/green.jpg);
+    height: 20px;
+    width: 20px;
+    position: absolute;
+}
+
+.blueButton{
+    background: url(images/blue.jpg);
+    height: 20px;
+    width: 20px;
+    position: absolute;
+}
+
+.yellowButton{
+    background: url(images/yellow.jpg);
+    height: 20px;
+    width: 20px;
+    position: absolute;
 }
