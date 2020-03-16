@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ludo</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="LudoEngine.js"></script>
+  </head>
+  <body onload="loadBoard()">
+    <div class="game-field">
+      <h1 style="color: brown;">Ludo</h1>
+      <div class="ludo-board" ></div>
+
+      <div class="dice-field">
+        <div class="player-info">
+          <div name="player" class="player-style">
+            <h1 id="player" style="color: red; margin-right: 10px;">Red's</h1><h1>turn<h1>
+          </div>
+          <label for="player">Click on the dice to shuffle</label>
+        </div>
+        <div id="dice" onclick="rollDice()"></div>
+      </div>
+
+      <div class="redButton" id="red1" onclick="moveNow(red1)"></div>
+      <div class="redButton" id="red2" onclick="moveNow(red2)"></div>
+      <div class="redButton" id="red3" onclick="moveNow(red3)"></div>
+      <div class="redButton" id="red4" onclick="moveNow(red4)"></div>
+
+      <div class="greenButton" id="green1" onclick="moveNow(green1)"></div>
+      <div class="greenButton" id="green2" onclick="moveNow(green2)"></div>
+      <div class="greenButton" id="green3" onclick="moveNow(green3)"></div>
+      <div class="greenButton" id="green4" onclick="moveNow(green4)"></div>
+
+      <div class="blueButton" id="blue1" onclick="moveNow(blue1)"></div>
+      <div class="blueButton" id="blue2" onclick="moveNow(blue2)"></div>
+      <div class="blueButton" id="blue3" onclick="moveNow(blue3)"></div>
+      <div class="blueButton" id="blue4" onclick="moveNow(blue4)"></div>
+
+      <div class="yellowButton" id="yellow1" onclick="moveNow(yellow1)"></div>
+      <div class="yellowButton" id="yellow2" onclick="moveNow(yellow2)"></div>
+      <div class="yellowButton" id="yellow3" onclick="moveNow(yellow3)"></div>
+      <div class="yellowButton" id="yellow4" onclick="moveNow(yellow4)"></div>
+    </div>
+  </body>
+</html>
