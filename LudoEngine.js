@@ -1,4 +1,12 @@
 const moveUnit = 30;
+var move = 0;
+
+var players = ["blue", "yellow", "green", "red"];
+var playerNumber = 0;
+var currentPlayer = players[playerNumber];
+
+var diceRolled = false;
+var diceResult;
 
 var red1,
   red2,
@@ -17,23 +25,35 @@ var red1,
   yellow3,
   yellow4;
 
+var redPawnsPath = [];
+var bluePawnsPath = [];
+var greenPawnsPath = [];
+var yellowPawnsPath = [];
+
 class Pawns {
   element = null;
+  elementName = "";
   positionX = "";
   positionY = "";
-  event;
   startPosition = {
     corX: 0,
     corY: 0
   };
+  pawnsOnBoard = false;
 
-  constructor(elementID, positionX, positionY, startPosition) {
+  constructor(elementID = "", positionX, positionY, startPosition) {
     this.element = document.getElementById(elementID);
-    this.event = document.getElementById(elementID).onclick;
+    this.elementName = elementID.substring(0, elementID.length - 1);
     this.positionX = positionX;
     this.positionY = positionY;
     this.startPosition = startPosition;
     this.resetPosition();
+  }
+
+  getCurrentPosition() {
+    let corX = this.element.offsetLeft;
+    let corY = this.element.offsetTop;
+    return { corX: corX, corY: corY };
   }
 
   resetPosition() {
@@ -48,55 +68,61 @@ class Pawns {
       "px;left:" +
       this.startPosition.corX +
       "px";
-  }
-
-  moveNext() {
-    let move = moveUnit + 65;
-    console.log("move");
-    this.element.style.cssText = "top:307px;left:" + move + "px";
-  }
-
-  onClick() {
-    return this.event;
+    this.pawnsOnBoard = true;
   }
 }
 
-function shuffleDice() {
-  let diceResult = Math.floor(Math.random() * 6 + 1);
-  document.getElementById("dice").style.backgroundImage =
-    "url(images/" + diceResult + ".jpg)";
-  console.log("shuffled");
+function moveNow(pawn) {}
+
+function nextPlayer() {
+  ++playerNumber;
+  if (playerNumber > 3) {
+    playerNumber = 0;
+    currentPlayer = players[playerNumber];
+  } else {
+    currentPlayer = players[playerNumber];
+  }
+  console.log("player changed to: " + currentPlayer);
+}
+
+function loadBoard() {
+  red1 = new Pawns("red1", 80, 170, pawnsStartPosition.red);
+  red2 = new Pawns("red2", 140, 170, pawnsStartPosition.red);
+  red3 = new Pawns("red3", 80, 230, pawnsStartPosition.red);
+  red4 = new Pawns("red4", 140, 230, pawnsStartPosition.red);
+
+  green1 = new Pawns("green1", 365, 170, pawnsStartPosition.green);
+  green2 = new Pawns("green2", 425, 170, pawnsStartPosition.green);
+  green3 = new Pawns("green3", 365, 230, pawnsStartPosition.green);
+  green4 = new Pawns("green4", 425, 230, pawnsStartPosition.green);
+
+  blue1 = new Pawns("blue1", 80, 450, pawnsStartPosition.blue);
+  blue2 = new Pawns("blue2", 140, 450, pawnsStartPosition.blue);
+  blue3 = new Pawns("blue3", 80, 510, pawnsStartPosition.blue);
+  blue4 = new Pawns("blue4", 140, 510, pawnsStartPosition.blue);
+
+  yellow1 = new Pawns("yellow1", 365, 450, pawnsStartPosition.yellow);
+  yellow2 = new Pawns("yellow2", 425, 450, pawnsStartPosition.yellow);
+  yellow3 = new Pawns("yellow3", 365, 510, pawnsStartPosition.yellow);
+  yellow4 = new Pawns("yellow4", 425, 510, pawnsStartPosition.yellow);
+}
+
+function rollDice() {
+  if (diceRolled == false) {
+    diceResult = Math.floor(Math.random() * 6 + 1);
+    document.getElementById("dice").style.backgroundImage =
+      "url(images/" + diceResult + ".jpg)";
+    diceRolled = true;
+  }
 }
 
 function resetDice() {
   document.getElementById("dice").style.backgroundImage =
     "url(images/dice.png)";
-  console.log("reset");
+  console.log("dice reset");
 }
 
-function loadBoard() {
-  red1 = new Pawns("red1", 80, 170, onBoardStartPosition.red);
-  red2 = new Pawns("red2", 140, 170, onBoardStartPosition.red);
-  red3 = new Pawns("red3", 80, 230, onBoardStartPosition.red);
-  red4 = new Pawns("red4", 140, 230, onBoardStartPosition.red);
-
-  green1 = new Pawns("green1", 365, 170, onBoardStartPosition.green);
-  green2 = new Pawns("green2", 425, 170, onBoardStartPosition.green);
-  green3 = new Pawns("green3", 365, 230, onBoardStartPosition.green);
-  green4 = new Pawns("green4", 425, 230, onBoardStartPosition.green);
-
-  blue1 = new Pawns("blue1", 80, 450, onBoardStartPosition.blue);
-  blue2 = new Pawns("blue2", 140, 450, onBoardStartPosition.blue);
-  blue3 = new Pawns("blue3", 80, 510, onBoardStartPosition.blue);
-  blue4 = new Pawns("blue4", 140, 510, onBoardStartPosition.blue);
-
-  yellow1 = new Pawns("yellow1", 365, 450, onBoardStartPosition.yellow);
-  yellow2 = new Pawns("yellow2", 425, 450, onBoardStartPosition.yellow);
-  yellow3 = new Pawns("yellow3", 365, 510, onBoardStartPosition.yellow);
-  yellow4 = new Pawns("yellow4", 425, 510, onBoardStartPosition.yellow);
-}
-
-var onBoardStartPosition = {
+var pawnsStartPosition = {
   red: { corX: 65, corY: 307 },
   green: { corX: 285, corY: 147 },
   blue: { corX: 225, corY: 525 },
