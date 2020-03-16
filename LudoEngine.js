@@ -1,5 +1,65 @@
 const moveUnit = 30;
-var red1 = null;
+
+var red1,
+  red2,
+  red3,
+  red4,
+  blue1,
+  blue2,
+  blue3,
+  blue4,
+  green1,
+  green2,
+  green3,
+  green4,
+  yellow1,
+  yellow2,
+  yellow3,
+  yellow4;
+
+class Pawns {
+  element = null;
+  positionX = "";
+  positionY = "";
+  event;
+  startPosition = {
+    corX: 0,
+    corY: 0
+  };
+
+  constructor(elementID, positionX, positionY, startPosition) {
+    this.element = document.getElementById(elementID);
+    this.event = document.getElementById(elementID).onclick;
+    this.positionX = positionX;
+    this.positionY = positionY;
+    this.startPosition = startPosition;
+    this.resetPosition();
+  }
+
+  resetPosition() {
+    this.element.style.cssText =
+      "top:" + this.positionY + "px;left:" + this.positionX + "px";
+  }
+
+  onBoard() {
+    this.element.style.cssText =
+      "top:" +
+      this.startPosition.corY +
+      "px;left:" +
+      this.startPosition.corX +
+      "px";
+  }
+
+  moveNext() {
+    let move = moveUnit + 65;
+    console.log("move");
+    this.element.style.cssText = "top:307px;left:" + move + "px";
+  }
+
+  onClick() {
+    return this.event;
+  }
+}
 
 function shuffleDice() {
   let diceResult = Math.floor(Math.random() * 6 + 1);
@@ -14,65 +74,31 @@ function resetDice() {
   console.log("reset");
 }
 
-class Red {
-  element = null;
-  positionX = "";
-  positionY = "";
-  constructor(elementID, positionX, positionY) {
-    this.element = document.getElementById(elementID);
-    this.positionX = positionX;
-    this.positionY = positionY;
-  }
+function loadBoard() {
+  red1 = new Pawns("red1", 80, 170, onBoardStartPosition.red);
+  red2 = new Pawns("red2", 140, 170, onBoardStartPosition.red);
+  red3 = new Pawns("red3", 80, 230, onBoardStartPosition.red);
+  red4 = new Pawns("red4", 140, 230, onBoardStartPosition.red);
 
-  resetPosition() {
-    this.element.style.cssText =
-      "top:" + this.positionY + "px;left:" + this.positionX + "px";
-  }
+  green1 = new Pawns("green1", 365, 170, onBoardStartPosition.green);
+  green2 = new Pawns("green2", 425, 170, onBoardStartPosition.green);
+  green3 = new Pawns("green3", 365, 230, onBoardStartPosition.green);
+  green4 = new Pawns("green4", 425, 230, onBoardStartPosition.green);
 
-  onBoard() {
-    this.element.style.cssText = "top:307px;left:65px";
-  }
+  blue1 = new Pawns("blue1", 80, 450, onBoardStartPosition.blue);
+  blue2 = new Pawns("blue2", 140, 450, onBoardStartPosition.blue);
+  blue3 = new Pawns("blue3", 80, 510, onBoardStartPosition.blue);
+  blue4 = new Pawns("blue4", 140, 510, onBoardStartPosition.blue);
 
-  moveNext() {
-    let move = moveUnit + 65;
-    console.log(move);
-    this.element.style.cssText = "top:307px;left:" + move + "px";
-  }
+  yellow1 = new Pawns("yellow1", 365, 450, onBoardStartPosition.yellow);
+  yellow2 = new Pawns("yellow2", 425, 450, onBoardStartPosition.yellow);
+  yellow3 = new Pawns("yellow3", 365, 510, onBoardStartPosition.yellow);
+  yellow4 = new Pawns("yellow4", 425, 510, onBoardStartPosition.yellow);
 }
 
-function resetButtons() {
-  red1 = new Red("red1", 80, 170);
-  red2 = new Red("red2", 140, 170);
-  red3 = new Red("red3", 80, 230);
-  red4 = new Red("red4", 140, 230);
-  red1.resetPosition();
-  red2.resetPosition();
-  red3.resetPosition();
-  red4.resetPosition();
-
-  document.getElementById("green1").style.cssText = "top:170px;left:365px";
-  document.getElementById("green2").style.cssText = "top:170px;left:425px";
-  document.getElementById("green3").style.cssText = "top:230px;left:365px";
-  document.getElementById("green4").style.cssText = "top:230px;left:425px";
-
-  document.getElementById("blue1").style.cssText = "top:450px;left:80px";
-  document.getElementById("blue2").style.cssText = "top:450px;left:140px";
-  document.getElementById("blue3").style.cssText = "top:510px;left:80px";
-  document.getElementById("blue4").style.cssText = "top:510px;left:140px";
-
-  document.getElementById("yellow1").style.cssText = "top:450px;left:365px";
-  document.getElementById("yellow2").style.cssText = "top:450px;left:425px";
-  document.getElementById("yellow3").style.cssText = "top:510px;left:365px";
-  document.getElementById("yellow4").style.cssText = "top:510px;left:425px";
-}
-
-buttonPositions = {
-  red1X: 80,
-  red1Y: 170,
-  red2X: 140,
-  red2Y: 170,
-  red3X: 80,
-  red3Y: 230,
-  red4X: 140,
-  red4Y: 230
+var onBoardStartPosition = {
+  red: { corX: 65, corY: 307 },
+  green: { corX: 285, corY: 147 },
+  blue: { corX: 225, corY: 525 },
+  yellow: { corX: 443, corY: 366 }
 };
