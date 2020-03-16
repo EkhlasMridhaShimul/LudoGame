@@ -162,6 +162,44 @@ pathGenerator(moveUp, 5, greenPawnsPath);
 pathGenerator(moveRight, 1, greenPawnsPath);
 pathGenerator(moveDown, 6, greenPawnsPath);
 
+/**yellow's path */
+pathGenerator(moveLeft, 3, yellowPawnsPath);
+pathGenerator(moveLeftDown, 1, yellowPawnsPath);
+pathGenerator(moveDown, 5, yellowPawnsPath);
+pathGenerator(moveLeft, 2, yellowPawnsPath);
+pathGenerator(moveUp, 5, yellowPawnsPath);
+pathGenerator(moveUpLeft, 1, yellowPawnsPath);
+pathGenerator(moveLeft, 5, yellowPawnsPath);
+pathGenerator(moveUp, 2, yellowPawnsPath);
+pathGenerator(moveRight, 5, yellowPawnsPath);
+pathGenerator(moveRightUp, 1, yellowPawnsPath);
+pathGenerator(moveUp, 5, yellowPawnsPath);
+pathGenerator(moveRight, 2, yellowPawnsPath);
+pathGenerator(moveDown, 5, yellowPawnsPath);
+pathGenerator(moveDownRight, 1, yellowPawnsPath);
+pathGenerator(moveRight, 5, yellowPawnsPath);
+pathGenerator(moveDown, 1, yellowPawnsPath);
+pathGenerator(moveLeft, 6, yellowPawnsPath);
+
+/**blue's path */
+pathGenerator(moveUp, 4, bluePawnsPath);
+pathGenerator(moveUpLeft, 1, bluePawnsPath);
+pathGenerator(moveLeft, 5, bluePawnsPath);
+pathGenerator(moveUp, 2, bluePawnsPath);
+pathGenerator(moveRight, 5, bluePawnsPath);
+pathGenerator(moveRightUp, 1, bluePawnsPath);
+pathGenerator(moveUp, 5, bluePawnsPath);
+pathGenerator(moveRight, 2, bluePawnsPath);
+pathGenerator(moveDown, 5, bluePawnsPath);
+pathGenerator(moveDownRight, 1, bluePawnsPath);
+pathGenerator(moveRight, 5, bluePawnsPath);
+pathGenerator(moveDown, 2, bluePawnsPath);
+pathGenerator(moveLeft, 5, bluePawnsPath);
+pathGenerator(moveLeftDown, 1, bluePawnsPath);
+pathGenerator(moveDown, 5, bluePawnsPath);
+pathGenerator(moveLeft, 1, bluePawnsPath);
+pathGenerator(moveUp, 6, bluePawnsPath);
+
 class Pawns {
   element = null;
   elementName = "";
