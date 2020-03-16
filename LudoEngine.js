@@ -1,5 +1,7 @@
-const moveUnit = 30;
+const moveUnit = 32;
 var move = 0;
+var start = 0;
+var currentRoom = 0;
 
 var players = ["blue", "yellow", "green", "red"];
 var playerNumber = 0;
@@ -30,11 +32,142 @@ var bluePawnsPath = [];
 var greenPawnsPath = [];
 var yellowPawnsPath = [];
 
+function loadBoard() {
+  red1 = new Pawns("red1", 80, 170, pawnsStartPosition.red);
+  red2 = new Pawns("red2", 140, 170, pawnsStartPosition.red);
+  red3 = new Pawns("red3", 80, 230, pawnsStartPosition.red);
+  red4 = new Pawns("red4", 140, 230, pawnsStartPosition.red);
+
+  green1 = new Pawns("green1", 365, 170, pawnsStartPosition.green);
+  green2 = new Pawns("green2", 425, 170, pawnsStartPosition.green);
+  green3 = new Pawns("green3", 365, 230, pawnsStartPosition.green);
+  green4 = new Pawns("green4", 425, 230, pawnsStartPosition.green);
+
+  blue1 = new Pawns("blue1", 80, 450, pawnsStartPosition.blue);
+  blue2 = new Pawns("blue2", 140, 450, pawnsStartPosition.blue);
+  blue3 = new Pawns("blue3", 80, 510, pawnsStartPosition.blue);
+  blue4 = new Pawns("blue4", 140, 510, pawnsStartPosition.blue);
+
+  yellow1 = new Pawns("yellow1", 365, 450, pawnsStartPosition.yellow);
+  yellow2 = new Pawns("yellow2", 425, 450, pawnsStartPosition.yellow);
+  yellow3 = new Pawns("yellow3", 365, 510, pawnsStartPosition.yellow);
+  yellow4 = new Pawns("yellow4", 425, 510, pawnsStartPosition.yellow);
+}
+
+function moveRight(pawn) {
+  let positions = pawn.getCurrentPosition();
+  let newPositions = { corX: positions.corX + moveUnit, corY: positions.corY };
+  pawn.setPosition(newPositions);
+}
+
+function moveLeft(pawn) {
+  let positions = pawn.getCurrentPosition();
+  let newPositions = { corX: positions.corX - moveUnit, corY: positions.corY };
+  pawn.setPosition(newPositions);
+}
+
+function moveUp(pawn) {
+  let positions = pawn.getCurrentPosition();
+  let newPosition = { corX: positions.corX, corY: positions.corY - moveUnit };
+  pawn.setPosition(newPosition);
+}
+
+function moveDown(pawn) {
+  let positions = pawn.getCurrentPosition();
+  let newPosition = { corX: positions.corX, corY: positions.corY + moveUnit };
+  pawn.setPosition(newPosition);
+}
+
+function moveUpRight(pawn) {
+  moveUp(pawn);
+  moveRight(pawn);
+}
+
+function moveLeftDown(pawn) {
+  moveLeft(pawn);
+  moveDown(pawn);
+}
+
+function moveUpLeft(pawn) {
+  moveUp(pawn);
+  moveLeft(pawn);
+}
+
+function moveRightDown(pawn) {
+  moveRight(pawn);
+  moveDown(pawn);
+}
+
+function moveLeftUp(pawn) {
+  moveLeft(pawn);
+  moveUp(pawn);
+}
+
+function moveDownRight(pawn) {
+  moveDown(pawn);
+  moveRight(pawn);
+}
+
+function moveDownLeft(pawn) {
+  moveDown(pawn);
+  moveLeft(pawn);
+}
+
+function moveRightUp(pawn) {
+  moveRight(pawn);
+  moveUp(pawn);
+}
+
+function pathGenerator(paths, number, pathStore) {
+  for (let i = 0; i < number; ++i) {
+    pathStore.push(paths);
+  }
+}
+
+/** red's path */
+pathGenerator(moveRight, 4, redPawnsPath);
+pathGenerator(moveRightUp, 1, redPawnsPath);
+pathGenerator(moveUp, 5, redPawnsPath);
+pathGenerator(moveRight, 2, redPawnsPath);
+pathGenerator(moveDown, 5, redPawnsPath);
+pathGenerator(moveDownRight, 1, redPawnsPath);
+pathGenerator(moveRight, 5, redPawnsPath);
+pathGenerator(moveDown, 2, redPawnsPath);
+pathGenerator(moveLeft, 5, redPawnsPath);
+pathGenerator(moveLeftDown, 1, redPawnsPath);
+pathGenerator(moveDown, 5, redPawnsPath);
+pathGenerator(moveLeft, 2, redPawnsPath);
+pathGenerator(moveUp, 5, redPawnsPath);
+pathGenerator(moveUpLeft, 1, redPawnsPath);
+pathGenerator(moveLeft, 5, redPawnsPath);
+pathGenerator(moveUp, 1, redPawnsPath);
+pathGenerator(moveRight, 6, redPawnsPath);
+
+/** green's path */
+pathGenerator(moveDown, 4, greenPawnsPath);
+pathGenerator(moveDownRight, 1, greenPawnsPath);
+pathGenerator(moveRight, 5, greenPawnsPath);
+pathGenerator(moveDown, 2, greenPawnsPath);
+pathGenerator(moveLeft, 5, greenPawnsPath);
+pathGenerator(moveLeftDown, 1, greenPawnsPath);
+pathGenerator(moveDown, 5, greenPawnsPath);
+pathGenerator(moveLeft, 2, greenPawnsPath);
+pathGenerator(moveUp, 5, greenPawnsPath);
+pathGenerator(moveUpLeft, 1, greenPawnsPath);
+pathGenerator(moveLeft, 5, greenPawnsPath);
+pathGenerator(moveUp, 2, greenPawnsPath);
+pathGenerator(moveRight, 5, greenPawnsPath);
+pathGenerator(moveRightUp, 1, greenPawnsPath);
+pathGenerator(moveUp, 5, greenPawnsPath);
+pathGenerator(moveRight, 1, greenPawnsPath);
+pathGenerator(moveDown, 6, greenPawnsPath);
+
 class Pawns {
   element = null;
   elementName = "";
   positionX = "";
   positionY = "";
+  roomNumber = 0;
   startPosition = {
     corX: 0,
     corY: 0
@@ -56,6 +189,11 @@ class Pawns {
     return { corX: corX, corY: corY };
   }
 
+  setPosition(positions) {
+    this.element.style.cssText =
+      "top:" + positions.corY + "px;left:" + positions.corX + "px";
+  }
+
   resetPosition() {
     this.element.style.cssText =
       "top:" + this.positionY + "px;left:" + this.positionX + "px";
@@ -72,7 +210,18 @@ class Pawns {
   }
 }
 
-function moveNow(pawn) {}
+function moveNow(pawn) {
+  if (pawn.pawnsOnBoard) {
+    currentRoom = pawn.roomNumber;
+    for (; pawn.roomNumber < currentRoom + 6; ++pawn.roomNumber) {
+      redPawnsPath[pawn.roomNumber](pawn);
+      console.log(currentRoom);
+    }
+  } else {
+    pawn.onBoard();
+  }
+  console.log(pawn.pawnsOnBoard);
+}
 
 function nextPlayer() {
   ++playerNumber;
@@ -83,28 +232,6 @@ function nextPlayer() {
     currentPlayer = players[playerNumber];
   }
   console.log("player changed to: " + currentPlayer);
-}
-
-function loadBoard() {
-  red1 = new Pawns("red1", 80, 170, pawnsStartPosition.red);
-  red2 = new Pawns("red2", 140, 170, pawnsStartPosition.red);
-  red3 = new Pawns("red3", 80, 230, pawnsStartPosition.red);
-  red4 = new Pawns("red4", 140, 230, pawnsStartPosition.red);
-
-  green1 = new Pawns("green1", 365, 170, pawnsStartPosition.green);
-  green2 = new Pawns("green2", 425, 170, pawnsStartPosition.green);
-  green3 = new Pawns("green3", 365, 230, pawnsStartPosition.green);
-  green4 = new Pawns("green4", 425, 230, pawnsStartPosition.green);
-
-  blue1 = new Pawns("blue1", 80, 450, pawnsStartPosition.blue);
-  blue2 = new Pawns("blue2", 140, 450, pawnsStartPosition.blue);
-  blue3 = new Pawns("blue3", 80, 510, pawnsStartPosition.blue);
-  blue4 = new Pawns("blue4", 140, 510, pawnsStartPosition.blue);
-
-  yellow1 = new Pawns("yellow1", 365, 450, pawnsStartPosition.yellow);
-  yellow2 = new Pawns("yellow2", 425, 450, pawnsStartPosition.yellow);
-  yellow3 = new Pawns("yellow3", 365, 510, pawnsStartPosition.yellow);
-  yellow4 = new Pawns("yellow4", 425, 510, pawnsStartPosition.yellow);
 }
 
 function rollDice() {
