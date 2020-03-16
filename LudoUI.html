@@ -13,9 +13,9 @@
       <div class="dice-field">
         <div class="player-info">
           <div name="player" class="player-style">
-            <h1 id="player" style="color: red; margin-right: 10px;">Red's</h1><h1>turn<h1>
+            <h1 id="player" style="background-color: red;color:#ffffff;; margin-right: 10px;">Red</h1><h1>turn<h1>
           </div>
-          <label for="player">Click on the dice to shuffle</label>
+          <label for="player">Click on the dice to roll</label>
         </div>
         <div id="dice" onclick="rollDice()"></div>
       </div>
@@ -40,5 +40,6 @@
       <div class="yellowButton" id="yellow3" onclick="moveNow(yellow3)"></div>
       <div class="yellowButton" id="yellow4" onclick="moveNow(yellow4)"></div>
     </div>
+    <button onclick="isAnyPawnsOnBoard()">Check</button>
   </body>
 </html>

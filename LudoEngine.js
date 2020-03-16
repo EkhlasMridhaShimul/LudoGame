@@ -32,26 +32,47 @@ var bluePawnsPath = [];
 var greenPawnsPath = [];
 var yellowPawnsPath = [];
 
+var Red = [];
+var Green = [];
+var Yellow = [];
+var Blue = [];
+
 function loadBoard() {
   red1 = new Pawns("red1", 80, 170, pawnsStartPosition.red);
   red2 = new Pawns("red2", 140, 170, pawnsStartPosition.red);
   red3 = new Pawns("red3", 80, 230, pawnsStartPosition.red);
   red4 = new Pawns("red4", 140, 230, pawnsStartPosition.red);
+  Red.push(red1);
+  Red.push(red2);
+  Red.push(red3);
+  Red.push(red4);
 
   green1 = new Pawns("green1", 365, 170, pawnsStartPosition.green);
   green2 = new Pawns("green2", 425, 170, pawnsStartPosition.green);
   green3 = new Pawns("green3", 365, 230, pawnsStartPosition.green);
   green4 = new Pawns("green4", 425, 230, pawnsStartPosition.green);
+  Green.push(green1);
+  Green.push(green2);
+  Green.push(green3);
+  Green.push(green4);
 
   blue1 = new Pawns("blue1", 80, 450, pawnsStartPosition.blue);
   blue2 = new Pawns("blue2", 140, 450, pawnsStartPosition.blue);
   blue3 = new Pawns("blue3", 80, 510, pawnsStartPosition.blue);
   blue4 = new Pawns("blue4", 140, 510, pawnsStartPosition.blue);
+  Blue.push(blue1);
+  Blue.push(blue2);
+  Blue.push(blue3);
+  Blue.push(blue4);
 
   yellow1 = new Pawns("yellow1", 365, 450, pawnsStartPosition.yellow);
   yellow2 = new Pawns("yellow2", 425, 450, pawnsStartPosition.yellow);
   yellow3 = new Pawns("yellow3", 365, 510, pawnsStartPosition.yellow);
   yellow4 = new Pawns("yellow4", 425, 510, pawnsStartPosition.yellow);
+  Yellow.push(yellow1);
+  Yellow.push(yellow2);
+  Yellow.push(yellow3);
+  Yellow.push(yellow4);
 }
 
 function moveRight(pawn) {
@@ -227,6 +248,10 @@ class Pawns {
     return { corX: corX, corY: corY };
   }
 
+  getCurrentPlayer() {
+    return this.elementName;
+  }
+
   setPosition(positions) {
     this.element.style.cssText =
       "top:" + positions.corY + "px;left:" + positions.corX + "px";
@@ -235,6 +260,7 @@ class Pawns {
   resetPosition() {
     this.element.style.cssText =
       "top:" + this.positionY + "px;left:" + this.positionX + "px";
+    this.pawnsOnBoard = false;
   }
 
   onBoard() {
@@ -249,16 +275,10 @@ class Pawns {
 }
 
 function moveNow(pawn) {
-  if (pawn.pawnsOnBoard) {
-    currentRoom = pawn.roomNumber;
-    for (; pawn.roomNumber < currentRoom + 6; ++pawn.roomNumber) {
-      redPawnsPath[pawn.roomNumber](pawn);
-      console.log(currentRoom);
+  if (diceRolled) {
+    if (currentPlayer == pawn.getCurrentPlayer) {
     }
-  } else {
-    pawn.onBoard();
   }
-  console.log(pawn.pawnsOnBoard);
 }
 
 function nextPlayer() {
@@ -269,7 +289,10 @@ function nextPlayer() {
   } else {
     currentPlayer = players[playerNumber];
   }
-  console.log("player changed to: " + currentPlayer);
+
+  console.log(
+    "player changed to: " + currentPlayer + "number: " + playerNumber
+  );
 }
 
 function rollDice() {
@@ -277,7 +300,46 @@ function rollDice() {
     diceResult = Math.floor(Math.random() * 6 + 1);
     document.getElementById("dice").style.backgroundImage =
       "url(images/" + diceResult + ".jpg)";
-    diceRolled = true;
+    if (isAnyPawnsOnBoard()) {
+      diceResult = true;
+    } else if (diceResult != 6) {
+      setTimeout(() => {
+        resetDice();
+        diceRolled = false;
+        nextPlayer();
+        document.getElementById("player").innerText = currentPlayer;
+        document.getElementById("player").style.backgroundColor = currentPlayer;
+      }, 2000);
+    }
+  }
+}
+
+function pawnsActivity(element) {
+  let status = element.roomNumber + diceResult;
+  if (!element.pawnsOnBoard || status > 55) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+function isAnyPawnsOnBoard() {
+  if ((currentPlayer = "red")) {
+    Red.forEach(element => {
+      return pawnsActivity(element);
+    });
+  } else if ((currentPlayer = "green")) {
+    Green.forEach(element => {
+      return pawnsActivity(element);
+    });
+  } else if ((currentPlayer = "yellow")) {
+    Yellow.forEach(element => {
+      return pawnsActivity(element);
+    });
+  } else if ((currentPlayer = "blue")) {
+    Blue.forEach(element => {
+      return pawnsActivity(element);
+    });
   }
 }
 
