@@ -253,12 +253,10 @@ function moveNow(pawn) {
     currentRoom = pawn.roomNumber;
     for (; pawn.roomNumber < currentRoom + 6; ++pawn.roomNumber) {
       redPawnsPath[pawn.roomNumber](pawn);
-      console.log(currentRoom);
     }
   } else {
     pawn.onBoard();
   }
-  console.log(pawn.pawnsOnBoard);
 }
 
 function nextPlayer() {
@@ -269,7 +267,6 @@ function nextPlayer() {
   } else {
     currentPlayer = players[playerNumber];
   }
-  console.log("player changed to: " + currentPlayer);
 }
 
 function rollDice() {
@@ -284,7 +281,6 @@ function rollDice() {
 function resetDice() {
   document.getElementById("dice").style.backgroundImage =
     "url(images/dice.png)";
-  console.log("dice reset");
 }
 
 var pawnsStartPosition = {
