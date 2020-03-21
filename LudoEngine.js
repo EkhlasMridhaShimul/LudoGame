@@ -3,7 +3,7 @@ var move = 0;
 var start = 0;
 var currentRoom = 0;
 
-var players = ["blue", "yellow", "green", "red"];
+var players = ["blue", "red", "green", "yellow"];
 var playerNumber = 0;
 var currentPlayer = players[playerNumber];
 
@@ -32,27 +32,10 @@ var bluePawnsPath = [];
 var greenPawnsPath = [];
 var yellowPawnsPath = [];
 
-function loadBoard() {
-  red1 = new Pawns("red1", 80, 170, pawnsStartPosition.red);
-  red2 = new Pawns("red2", 140, 170, pawnsStartPosition.red);
-  red3 = new Pawns("red3", 80, 230, pawnsStartPosition.red);
-  red4 = new Pawns("red4", 140, 230, pawnsStartPosition.red);
-
-  green1 = new Pawns("green1", 365, 170, pawnsStartPosition.green);
-  green2 = new Pawns("green2", 425, 170, pawnsStartPosition.green);
-  green3 = new Pawns("green3", 365, 230, pawnsStartPosition.green);
-  green4 = new Pawns("green4", 425, 230, pawnsStartPosition.green);
-
-  blue1 = new Pawns("blue1", 80, 450, pawnsStartPosition.blue);
-  blue2 = new Pawns("blue2", 140, 450, pawnsStartPosition.blue);
-  blue3 = new Pawns("blue3", 80, 510, pawnsStartPosition.blue);
-  blue4 = new Pawns("blue4", 140, 510, pawnsStartPosition.blue);
-
-  yellow1 = new Pawns("yellow1", 365, 450, pawnsStartPosition.yellow);
-  yellow2 = new Pawns("yellow2", 425, 450, pawnsStartPosition.yellow);
-  yellow3 = new Pawns("yellow3", 365, 510, pawnsStartPosition.yellow);
-  yellow4 = new Pawns("yellow4", 425, 510, pawnsStartPosition.yellow);
-}
+var Red = [];
+var Green = [];
+var Yellow = [];
+var Blue = [];
 
 function moveRight(pawn) {
   let positions = pawn.getCurrentPosition();
@@ -163,7 +146,7 @@ pathGenerator(moveRight, 1, greenPawnsPath);
 pathGenerator(moveDown, 6, greenPawnsPath);
 
 /**yellow's path */
-pathGenerator(moveLeft, 3, yellowPawnsPath);
+pathGenerator(moveLeft, 4, yellowPawnsPath);
 pathGenerator(moveLeftDown, 1, yellowPawnsPath);
 pathGenerator(moveDown, 5, yellowPawnsPath);
 pathGenerator(moveLeft, 2, yellowPawnsPath);
@@ -200,24 +183,109 @@ pathGenerator(moveDown, 5, bluePawnsPath);
 pathGenerator(moveLeft, 1, bluePawnsPath);
 pathGenerator(moveUp, 6, bluePawnsPath);
 
+function loadBoard() {
+  red1 = new Pawns("red1", 87, 170, pawnsStartPosition.red, redPawnsPath);
+  red2 = new Pawns("red2", 145, 170, pawnsStartPosition.red, redPawnsPath);
+  red3 = new Pawns("red3", 86, 215, pawnsStartPosition.red, redPawnsPath);
+  red4 = new Pawns("red4", 145, 215, pawnsStartPosition.red, redPawnsPath);
+
+  green1 = new Pawns(
+    "green1",
+    365,
+    170,
+    pawnsStartPosition.green,
+    greenPawnsPath
+  );
+  green2 = new Pawns(
+    "green2",
+    425,
+    170,
+    pawnsStartPosition.green,
+    greenPawnsPath
+  );
+  green3 = new Pawns(
+    "green3",
+    366,
+    215,
+    pawnsStartPosition.green,
+    greenPawnsPath
+  );
+  green4 = new Pawns(
+    "green4",
+    425,
+    215,
+    pawnsStartPosition.green,
+    greenPawnsPath
+  );
+
+  blue1 = new Pawns("blue1", 87, 451, pawnsStartPosition.blue, bluePawnsPath);
+  blue2 = new Pawns("blue2", 145, 450, pawnsStartPosition.blue, bluePawnsPath);
+  blue3 = new Pawns("blue3", 87, 495, pawnsStartPosition.blue, bluePawnsPath);
+  blue4 = new Pawns("blue4", 145, 495, pawnsStartPosition.blue, bluePawnsPath);
+
+  yellow1 = new Pawns(
+    "yellow1",
+    366,
+    456,
+    pawnsStartPosition.yellow,
+    yellowPawnsPath
+  );
+  yellow2 = new Pawns(
+    "yellow2",
+    425,
+    456,
+    pawnsStartPosition.yellow,
+    yellowPawnsPath
+  );
+  yellow3 = new Pawns(
+    "yellow3",
+    366,
+    500,
+    pawnsStartPosition.yellow,
+    yellowPawnsPath
+  );
+  yellow4 = new Pawns(
+    "yellow4",
+    425,
+    500,
+    pawnsStartPosition.yellow,
+    yellowPawnsPath
+  );
+}
+
+var TrackPawns = {
+  red: [],
+  green: [],
+  blue: [],
+  yellow: []
+};
+
 class Pawns {
   element = null;
   elementName = "";
   positionX = "";
   positionY = "";
   roomNumber = 0;
+  travellingPaths = [];
   startPosition = {
     corX: 0,
     corY: 0
   };
   pawnsOnBoard = false;
 
-  constructor(elementID = "", positionX, positionY, startPosition) {
+  constructor(
+    elementID = "",
+    positionX,
+    positionY,
+    startPosition,
+    travellingPaths
+  ) {
     this.element = document.getElementById(elementID);
     this.elementName = elementID.substring(0, elementID.length - 1);
     this.positionX = positionX;
     this.positionY = positionY;
     this.startPosition = startPosition;
+    this.travellingPaths = travellingPaths;
     this.resetPosition();
   }
 
@@ -225,6 +293,14 @@ class Pawns {
     let corX = this.element.offsetLeft;
     let corY = this.element.offsetTop;
     return { corX: corX, corY: corY };
+  }
+
+  trvel() {
+    this.travellingPaths[this.roomNumber](this);
+  }
+
+  getPlayer() {
+    return this.elementName;
   }
 
   setPosition(positions) {
@@ -235,6 +311,7 @@ class Pawns {
   resetPosition() {
     this.element.style.cssText =
       "top:" + this.positionY + "px;left:" + this.positionX + "px";
+    this.pawnsOnBoard = false;
   }
 
   onBoard() {
@@ -249,13 +326,27 @@ class Pawns {
 }
 
 function moveNow(pawn) {
-  if (pawn.pawnsOnBoard) {
-    currentRoom = pawn.roomNumber;
-    for (; pawn.roomNumber < currentRoom + 6; ++pawn.roomNumber) {
-      redPawnsPath[pawn.roomNumber](pawn);
+  if (diceRolled && currentPlayer == pawn.getPlayer()) {
+    if (!pawn.pawnsOnBoard && diceResult == 6) {
+      pawn.onBoard();
+      TrackPawns[currentPlayer].push(pawn);
+      resetDice();
+      diceRolled = false;
+    } else if (pawn.pawnsOnBoard && diceResult == 6) {
+      currentRoom = pawn.roomNumber;
+      for (; pawn.roomNumber < currentRoom + diceResult; ++pawn.roomNumber) {
+        pawn.trvel();
+      }
+      diceRolled = false;
+      resetDice();
+    } else if (pawn.pawnsOnBoard) {
+      for (; pawn.roomNumber < currentRoom + diceResult; ++pawn.roomNumber) {
+        pawn.trvel();
+      }
+      diceRolled = false;
+      resetDice();
+      nextPlayer();
     }
-  } else {
-    pawn.onBoard();
   }
 }
 
@@ -267,14 +358,74 @@ function nextPlayer() {
   } else {
     currentPlayer = players[playerNumber];
   }
+  document.getElementById("player").innerText = currentPlayer;
+  document.getElementById("player").style.backgroundColor = currentPlayer;
+
+  console.log(
+    "player changed to: " + currentPlayer + "number: " + playerNumber
+  );
 }
 
 function rollDice() {
+  let a = isAnyPawnsOnBoard();
+  console.log(a);
   if (diceRolled == false) {
     diceResult = Math.floor(Math.random() * 6 + 1);
     document.getElementById("dice").style.backgroundImage =
       "url(images/" + diceResult + ".jpg)";
     diceRolled = true;
+    if (diceResult != 6 && TrackPawns[currentPlayer].length == 0) {
+      setTimeout(() => {
+        resetDice();
+        diceRolled = false;
+        nextPlayer();
+      }, 2000);
+    }
+  }
+}
+
+function pawnsActivity(element) {
+  let status = element.roomNumber + diceResult;
+  if (!element.pawnsOnBoard || status > 55) {
+    return false;
+  } else {
+    return true;
+  }
+}
+var ab = 0;
+function isAnyPawnsOnBoard() {
+  if (currentPlayer == "red") {
+    Red.forEach(element => {
+      if (element.pawnsOnBoard == true) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  } else if (currentPlayer == "green") {
+    Green.forEach(element => {
+      if (element.pawnsOnBoard == true) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  } else if (currentPlayer == "yellow") {
+    Yellow.forEach(element => {
+      if (element.pawnsOnBoard == true) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  } else if (currentPlayer == "blue") {
+    Blue.forEach(element => {
+      if (element.pawnsOnBoard == true) {
+        return true;
+      } else {
+        return false;
+      }
+    });
   }
 }
 
