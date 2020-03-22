@@ -273,6 +273,8 @@ class Pawns {
   };
   pawnsOnBoard = false;
 
+  finishedJourney = false;
+
   constructor(
     elementID = "",
     positionX,
@@ -325,8 +327,12 @@ class Pawns {
   }
 }
 
-function moveNow(pawn) {
-  if (diceRolled && currentPlayer == pawn.getPlayer()) {
+function movePawn(pawn) {
+  if (
+    diceRolled &&
+    currentPlayer == pawn.getPlayer() &&
+    pawn.finishedJourney != true
+  ) {
     if (!pawn.pawnsOnBoard && diceResult == 6) {
       pawn.onBoard();
       TrackPawns[currentPlayer].push(pawn);
@@ -338,15 +344,23 @@ function moveNow(pawn) {
         pawn.trvel();
       }
       diceRolled = false;
+      checkPawnStatus(pawn);
       resetDice();
     } else if (pawn.pawnsOnBoard) {
       for (; pawn.roomNumber < currentRoom + diceResult; ++pawn.roomNumber) {
         pawn.trvel();
       }
       diceRolled = false;
+      checkPawnStatus(pawn);
       resetDice();
       nextPlayer();
     }
+  }
+}
+
+function checkPawnStatus(pawn) {
+  if (pawn.roomNumber == 56) {
+    pawn.finishedJourney = true;
   }
 }
 
@@ -360,15 +374,9 @@ function nextPlayer() {
   }
   document.getElementById("player").innerText = currentPlayer;
   document.getElementById("player").style.backgroundColor = currentPlayer;
-
-  console.log(
-    "player changed to: " + currentPlayer + "number: " + playerNumber
-  );
 }
 
 function rollDice() {
-  let a = isAnyPawnsOnBoard();
-  console.log(a);
   if (diceRolled == false) {
     diceResult = Math.floor(Math.random() * 6 + 1);
     document.getElementById("dice").style.backgroundImage =
@@ -381,51 +389,6 @@ function rollDice() {
         nextPlayer();
       }, 2000);
     }
-  }
-}
-
-function pawnsActivity(element) {
-  let status = element.roomNumber + diceResult;
-  if (!element.pawnsOnBoard || status > 55) {
-    return false;
-  } else {
-    return true;
-  }
-}
-var ab = 0;
-function isAnyPawnsOnBoard() {
-  if (currentPlayer == "red") {
-    Red.forEach(element => {
-      if (element.pawnsOnBoard == true) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-  } else if (currentPlayer == "green") {
-    Green.forEach(element => {
-      if (element.pawnsOnBoard == true) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-  } else if (currentPlayer == "yellow") {
-    Yellow.forEach(element => {
-      if (element.pawnsOnBoard == true) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-  } else if (currentPlayer == "blue") {
-    Blue.forEach(element => {
-      if (element.pawnsOnBoard == true) {
-        return true;
-      } else {
-        return false;
-      }
-    });
   }
 }
 
