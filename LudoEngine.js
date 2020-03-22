@@ -300,8 +300,9 @@ function rollDice() {
     diceResult = Math.floor(Math.random() * 6 + 1);
     document.getElementById("dice").style.backgroundImage =
       "url(images/" + diceResult + ".jpg)";
-    if (isAnyPawnsOnBoard()) {
+    if (isAnyPawnsOnBoard() || diceResult == 6) {
       diceResult = true;
+      console.log(diceResult);
     } else if (diceResult != 6) {
       setTimeout(() => {
         resetDice();
