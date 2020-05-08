@@ -1,1 +1,2 @@
-It is a simple multiplayer ludo game developed with javascript and html.
+#Ludo Game
+It is a multiplayer Ludo game developed with raw javascript.
